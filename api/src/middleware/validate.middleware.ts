@@ -1,16 +1,45 @@
 import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject, ZodError } from 'zod';
-import * as schemas from '../schemas/auth.schema';
 
-export const validateBody = (schemaName: keyof typeof schemas) =>
+import { AnyZodObject, ZodError } from 'zod';
+
+import { BadRequestError } from '../utils/errors/http-error';
+
+type Schemas = {
+  body?: AnyZodObject;
+  params?: AnyZodObject;
+  query?: AnyZodObject;
+}
+
+export const validate = (schemas: Schemas) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const schema = schemas[schemaName] as AnyZodObject;
     try {
-      schema.parse({ body: req.body });
-      next();
+      if (schemas.body) {
+        const result = schemas.body.parse(req.body);
+        req.body = result
+      }
+
+      if (schemas.params) {
+        const result = schemas.params.parse(req.params);
+        req.params = result
+      }
+
+      if (schemas.query) {
+        const result = schemas.query.parse(req.query);
+        req.query = result
+      }
+
+      return next();
+
     } catch (err) {
       if (err instanceof ZodError) {
-        res.status(400).json({ error: err.errors });
+        const formatted = err.errors.map((e) => ({
+          path: e.path.join('.'),
+          message: e.message
+        }))
+
+        return next(new BadRequestError("Validation error", formatted));
       }
+
+      return next(err)
     }
   };

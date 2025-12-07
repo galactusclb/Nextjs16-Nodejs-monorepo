@@ -1,25 +1,51 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { AppError } from '../utils/errors/app-errors';
+import { HttpError } from '../utils/errors/http-error';
+
 export function errorHandler(
-    err: any,
+    err: unknown,
     req: Request,
     res: Response,
     next: NextFunction
 ) {
     console.error('[Error]', err);
 
-    // Customize based on error type
-    if (err.name === 'ZodError') {
-        res.status(400).json({ error: err.errors });
-        return;
-    }
-    if (err.status) {
-        res.status(err.status).json({ error: err.message });
-        return;
+    let statusCode = 500;
+    let message = "Internal server error";
+    let details: unknown;
+
+    if (err instanceof HttpError) {
+        statusCode = err.statusCode;
+        message = err.message;
+        details = err.details;
+
+        return res.status(statusCode).json({
+            success: false,
+            error: message,
+            details
+        })
     }
 
-    //TODO: Handle auth based errors
+    if (err instanceof AppError) {
+        statusCode = 400;
+        message = err.message;
 
-    // Fallback
-    res.status(500).json({ error: 'Internal Server Error' });
+        if (typeof err.details === "object" && err.details !== null) {
+            details = { code: err.code, ...err.details };
+        } else {
+            details = { code: err.code, payload: err.details };
+        }
+
+        return res.status(statusCode).json({
+            success: false,
+            error: message,
+            details,
+        });
+    }
+
+    return res.status(statusCode).json({
+        success: false,
+        error: message,
+    });
 }
