@@ -8,6 +8,15 @@ export const findAll = () => {
     })
 }
 
+export const findById = (id: number, prismaIntance: PrismaClient | Prisma.TransactionClient = prisma) => {
+    return prismaIntance.order.findUnique({
+        where: { id },
+        include: {
+            orderProductMap: { include: { product: true } }
+        }
+    })
+}
+
 export const createOrder = async (input: CreateOrderInput) => {
     const { orderDescription, productIds } = input;
 
@@ -24,7 +33,7 @@ export const createOrder = async (input: CreateOrderInput) => {
             }))
         });
 
-        await findById(order.id);
+        return await findById(order.id, tx);
     });
 
     return result;
@@ -46,15 +55,6 @@ export const updateOrder = async (id: number, input: UpdateOrderInput) => {
             }
         }
     });
-}
-
-export const findById = (id: number, prismaIntance: PrismaClient | Prisma.TransactionClient = prisma) => {
-    return prismaIntance.order.findUnique({
-        where: { id },
-        include: {
-            orderProductMap: { include: { product: true } }
-        }
-    })
 }
 
 export const deleteOrderWithOrderRefferences = async (id: number) => {

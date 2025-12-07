@@ -24,9 +24,9 @@ export const getOrderByIdSchema = {
   }),
 };
 
-export const deleteOrderSchema = updateOrderSchema;
+export const deleteOrderSchema = getOrderByIdSchema;
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema.body>;
 export type UpdateOrderInput = z.infer<typeof updateOrderSchema.body>;
 export type GetOrderByIdParams = z.infer<typeof getOrderByIdSchema.params>;
-export type DeleteOrderInput = UpdateOrderInput;
+export type DeleteOrderInput = GetOrderByIdParams;

@@ -41,5 +41,5 @@ export const doDeleteOrder = async (id: Order['id'])=>{
 
     if(!deleteOrder) throw new NotFoundError('Order not found');
 
-    return;
+    return deleteOrder;
 }
