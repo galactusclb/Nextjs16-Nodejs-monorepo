@@ -1,0 +1,43 @@
+import { Request, Response } from 'express';
+
+import * as orderService from './order.service';
+
+export const getAllOrders = async (req: Request, res: Response): Promise<void> => {
+    const orders = await orderService.doGetAllOrders();
+    res.status(200).json({ success: true, data: orders })
+}
+
+export const getOrder = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const order = await orderService.doGetOrderById(Number(id));
+
+    res.status(200).json({
+        success: true,
+        data: order
+    });
+}
+
+export const createOrder = async (req: Request, res: Response) => {
+    const order = await orderService.doCreateOrder(req.body);
+
+    res.status(200).json({
+        success: true,
+        data: order
+    });
+}
+
+export const updateOrder = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const updatedOrder = await orderService.doUpdateOrder(Number(id), req.body);
+    res.status(200).json({ success: true, data: updatedOrder });
+}
+
+export const deleteOrder = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    await orderService.doDeleteOrder(Number(id));
+
+    res.status(204).json({ success: true, message: "Order delete success" });
+}
