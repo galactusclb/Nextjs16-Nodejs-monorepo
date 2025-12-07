@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["es2017"],
+    "module": "Node16",
+    "target": "ES2017",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node16",
+
+    "isolatedModules": true
+  },
+}

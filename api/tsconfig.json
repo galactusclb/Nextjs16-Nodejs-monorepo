@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "target": "ES2017",
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "allowJs": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["es2017", "dom"],
+
+    "isolatedModules" : true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"],
+}
