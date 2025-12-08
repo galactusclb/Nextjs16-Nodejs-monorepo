@@ -9,6 +9,13 @@ This is a monorepo containing:
 - **Web** (`/web`): Next.js frontend with TypeScript and TailwindCSS
 - **Database** (`db`): PostgreSQL with Docker
 
+## Live Application
+
+The live application is available at:
+
+- **Web Application**: https://cs.cleaoo.com
+- **API Server**: https://api.cs.cleaoo.com
+
 ## Prerequisites
 
 Before starting the project, ensure you have the following installed:
@@ -83,7 +90,7 @@ npm run prisma:seed
 
 ### 5. Access the Application
 
-Once all services are running:
+Once all services are running locally:
 
 - **Web Frontend**: http://localhost:3000
 - **API Server**: http://localhost:4000
