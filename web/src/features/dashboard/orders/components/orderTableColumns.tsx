@@ -1,14 +1,20 @@
 import { ColumnDefExtend } from "@/components/composite/table/responsiveTable";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuLabel,
+	DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import dayjs from "dayjs";
-import { ArrowUpDown } from "lucide-react";
-import { ReactNode } from "react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Fragment, ReactNode } from "react";
 import { Order } from "../schemas";
 
-export function orderTableColumns({ 
+export function orderTableColumns({
 	dropdownItems,
-}: { 
+}: {
 	dropdownItems?: ((item: Order) => ReactNode)[];
 }) {
 	const columns: ColumnDefExtend<Order>[] = [
@@ -34,7 +40,7 @@ export function orderTableColumns({
 			enableSorting: false,
 			enableHiding: false,
 			meta: {
-				className : "w-12 border-r",
+				className: "w-12 border-r",
 			}
 		},
 		{
@@ -117,52 +123,33 @@ export function orderTableColumns({
 		// 		<div className="capitalize">{row.getValue("status")}</div>
 		// 	),
 		// },
-		// {
-		// 	id: "actions",
-		// 	enableHiding: false,
-		// 	cell: ({ row }) => {
-		// 		const item = row.original;
+		{
+			id: "actions",
+			enableHiding: false,
+			cell: ({ row }) => {
+				const item = row.original;
 
-		// 		return (
-		// 			<DropdownMenu>
-		// 				<DropdownMenuTrigger asChild>
-		// 					<Button variant="ghost" className="h-8 w-8 p-0">
-		// 						<span className="sr-only">Open menu</span>
-		// 						<MoreHorizontal />
-		// 					</Button>
-		// 				</DropdownMenuTrigger>
-		// 				<DropdownMenuContent align="end">
-		// 					<DropdownMenuLabel>Actions</DropdownMenuLabel>
-		// 					{dropdownItems?.map((renderDropdownItem, key) => (
-		// 						<Fragment key={key}>{renderDropdownItem(item)}</Fragment>
-		// 					))}
-		// 					{/* <DropdownMenuItem onClick={() => onEdit(item)}>
-		// 						Edit Details
-		// 					</DropdownMenuItem>
-		// 					<DropdownMenuItem onClick={() => onManageNotes(item)}>
-		// 						Manage Notes
-		// 					</DropdownMenuItem> */}
-		// 					{/* <DropdownMenuSeparator /> */}
-		// 					{/* {canDelete ? (
-		// 						<DropdownMenuItem
-		// 							onClick={() => onDelete(item)}
-		// 							className="text-destructive focus:text-destructive focus:bg-destructive/10"
-		// 						>
-		// 							<Trash2 className="mr-2 h-4 w-4" />
-		// 							Delete Room
-		// 						</DropdownMenuItem>
-		// 					) : null} */}
-		// 					{/* <DropdownMenuItem onClick={() => onShowQr(item.id!)}>
-		// 						Show QR Code
-		// 					</DropdownMenuItem> */}
-		// 				</DropdownMenuContent>
-		// 			</DropdownMenu>
-		// 		);
-		// 	},
-		// 	meta: {
-		// 		className: "w-8",
-		// 	},
-		// },
+				return (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="h-8 w-8 p-0">
+								<span className="sr-only">Open menu</span>
+								<MoreHorizontal />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>Actions</DropdownMenuLabel>
+							{dropdownItems?.map((renderDropdownItem, key) => (
+								<Fragment key={key}>{renderDropdownItem(item)}</Fragment>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				);
+			},
+			meta: {
+				className: "w-8",
+			},
+		},
 	];
 
 	return columns;

@@ -3,6 +3,13 @@ import apiClient from "@/lib/axios";
 
 import { Order, OrderMutateFormData } from "../schemas";
 
+export const fetchOrderById = async (orderId: number): Promise<{
+    success: boolean,
+    data: Order
+}> => {
+    return await apiClient.get(`/orders/${orderId}`).then(res => res.data)
+}
+
 export const fetchOrders = ({ pageIndex, pageSize, filters }: TableMetaData): Promise<{
     data: Order[],
     meta: {
@@ -55,4 +62,8 @@ export const createOrderAction = async (data: OrderMutateFormData): Promise<{
             error: errorMessage,
         };
     }
+};
+
+export const deleteOrder = async (orderId: number): Promise<void> => {
+    await apiClient.delete(`/orders/${orderId}`);
 };

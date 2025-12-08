@@ -3,12 +3,13 @@ import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { PageSize } from "@/lib/types";
 import { useOrdersDetails } from "../hooks/useOrdersDetails";
 import { orderTableColumns } from "./orderTableColumns";
+import { DropdownItemDeleteOrderDialog } from "./dropdownItemDeleteOrderDialog";
+import { DropdownItemEditOrder } from "./DropdownItemEditOrder";
 
 function OrderTable() {
 	const {
 		pageMetaData,
 		orderList,
-		isOrderListLoading,
 		handleFilterSubmit,
 		handlePaginationChange,
 		totalPage,
@@ -16,16 +17,11 @@ function OrderTable() {
 
 	const columns = orderTableColumns({
 		dropdownItems: [
-			// (item) => <DropdownItemEditRoomDialog item={item} />,
-			// (item) => <DropdownItemViewNoteDialog item={item} />,
-			// (item) => <DropdownItemShowRoomQRDialog item={item} />,
-			// (item) => <DropdownItemMapRoomQRDialog item={item} />,
+			(item) => <DropdownItemEditOrder item={item} />,
 			() => <DropdownMenuSeparator />,
-			// (item) => <DropdownItemDeleteRoomDialog item={item} />,
+			(item) => <DropdownItemDeleteOrderDialog item={item} />,
 		],
 	});
-
-	// if (isRoomListLoading) return <>Loading...</>;
 
 	return (
 		<ResponsiveTable

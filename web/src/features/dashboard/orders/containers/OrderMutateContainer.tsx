@@ -1,5 +1,9 @@
 import OrderMutateForm from '../components/OrderMutateForm';
 
-export default function OrderMutateContainer(){
-    return <OrderMutateForm />;
+interface OrderMutateContainerProps {
+    orderId?: number;
+}
+
+export default function OrderMutateContainer({ orderId }: OrderMutateContainerProps){
+    return <OrderMutateForm orderId={orderId} />;
 }
