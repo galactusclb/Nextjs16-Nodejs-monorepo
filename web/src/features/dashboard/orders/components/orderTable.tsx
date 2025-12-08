@@ -27,34 +27,17 @@ function OrderTable() {
 		<ResponsiveTable
 			columns={columns}
 			data={orderList}
-			filterColumnKey="roomNumber"
 			filters={[
-				// {
-				// 	columnKey: "roomNumber",
-				// 	type: "input",
-				// },
-				// {
-				// 	columnKey: "mainType",
-				// 	type: "select",
-				// 	options: [
-				// 		{
-				// 			label: "SBG",
-				// 			value: "SBG",
-				// 		},
-				// 		{
-				// 			label: "SHM",
-				// 			value: "SHM",
-				// 		},
-				// 	],
-				// },
+				{
+					columnKey: "orderDescription",
+					type: "input",
+				},
 			]}
 			onFilterSubmit={handleFilterSubmit}
 			onPaginationChange={handlePaginationChange}
 			pageIndex={pageMetaData.pageIndex}
 			pageSize={pageMetaData.pageSize as PageSize}
 			pageCount={totalPage}
-			//   pageCount={Math.ceil(totalCount / pageSize)}
-			//   isLoading={isRoomListLoading}
 		/>
 	);
 }

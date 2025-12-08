@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { DMMF } from '@prisma/client/runtime/library';
 import { z } from "zod";
 import { PaginationOptions } from "../interfaces/paginate.type";
+import { BadRequestError } from "./errors/http-error";
 
 type FieldType = 'string' | 'enum' | 'number' | 'date' | 'boolean' | 'relation';
 
@@ -46,21 +47,21 @@ export function parseQueryParams<T>(
         let [field, operator, caseSensitiveMode] = match ? [match[1], match[2] || 'equals', match[3] || 'insensitive'] : [key, 'equals', 'insensitive'];
 
         if (!allowedFilters.includes(field)) {
-            throw new Error(`Filtering by '${field}' is not allowed. Allowed filters: ${allowedFilters.join(', ')}`);
+            throw new BadRequestError(`Filtering by '${field}' is not allowed. Allowed filters: ${allowedFilters.join(', ')}`);
         }
 
         const modelMeta = Prisma.dmmf.datamodel.models.find(m => m.name === modelName);
-        if (!modelMeta) throw new Error(`Model '${modelName}' not found`);
+        if (!modelMeta) throw new BadRequestError(`Model '${modelName}' not found`);
 
         const fieldMeta = modelMeta.fields.find(f => f.name === field);
-        if (!fieldMeta) throw new Error(`Field '${field}' not found in model '${modelName}'`);
+        if (!fieldMeta) throw new BadRequestError(`Field '${field}' not found in model '${modelName}'`);
 
 
         const type = getFieldType(fieldMeta);
         const validOperators = DEFAULT_OPERATORS[type];
 
         if (!validOperators.includes(operator)) {
-            throw new Error(`Invalid operator '${operator}' for field '${field}'. Valid operators: ${validOperators.join(', ')}`);
+            throw new BadRequestError(`Invalid operator '${operator}' for field '${field}'. Valid operators: ${validOperators.join(', ')}`);
         }
 
 
@@ -134,7 +135,7 @@ function handleDateParams(field: string, operator: string, value: any) {
         parsedDate = schema.parse(value);
 
     } catch (err) {
-        throw new Error(`Invalid date value '${value}' for field '${field}'. Valid format: YYYY-MM-DD or ISO 8601.`,);
+        throw new BadRequestError(`Invalid date value '${value}' for field '${field}'. Valid format: YYYY-MM-DD or ISO 8601.`,);
     }
 
     return {
@@ -144,7 +145,7 @@ function handleDateParams(field: string, operator: string, value: any) {
 
 function handleBooleanParams(field: string, value: any): boolean {
     if (typeof value !== 'string' || (value !== 'true' && value !== 'false')) {
-        throw new Error(`Invalid boolean value ${value} for field '${field}'. Valid values: true, false'`);
+        throw new BadRequestError(`Invalid boolean value ${value} for field '${field}'. Valid values: true, false'`);
     }
 
     return value === 'true';
@@ -153,7 +154,7 @@ function handleBooleanParams(field: string, value: any): boolean {
 function handleEnumParams(fieldMeta: any, field: string, value: any, operator: string): Record<string, any> {
     const enumsMeta = Prisma.dmmf.datamodel.enums;
     const enumDef = enumsMeta.find(e => e.name === fieldMeta.type);
-    if (!enumDef) throw new Error(`Enum definition for '${fieldMeta.type}' not found`);
+    if (!enumDef) throw new BadRequestError(`Enum definition for '${fieldMeta.type}' not found`);
 
     const enumValues = enumDef?.values.map(v => v.name) || [];
 
@@ -162,13 +163,13 @@ function handleEnumParams(fieldMeta: any, field: string, value: any, operator: s
         values = Array.isArray(value) ? value : String(value).split(',').map(v => v.trim());
         const invalid = values.filter(v => !enumValues.includes(v));
         if (invalid.length > 0) {
-            throw new Error(`Invalid enum values [${invalid.join(', ')}] for field '${field}'. Valid values: ${enumValues.join(', ')}`);
+            throw new BadRequestError(`Invalid enum values [${invalid.join(', ')}] for field '${field}'. Valid values: ${enumValues.join(', ')}`);
         }
 
         return { [operator]: values };
     } else {
         if (!enumValues.includes(String(value))) {
-            throw new Error(`Invalid enum value '${value}' for field '${field}'. Valid values: ${enumValues.join(', ')}`);
+            throw new BadRequestError(`Invalid enum value '${value}' for field '${field}'. Valid values: ${enumValues.join(', ')}`);
         }
         return { [operator]: value };
     }

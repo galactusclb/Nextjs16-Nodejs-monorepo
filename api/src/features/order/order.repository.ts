@@ -1,11 +1,31 @@
 import { Prisma, PrismaClient } from "@prisma/client"
 import prisma from "../../utils/prisma"
 import { CreateOrderInput, UpdateOrderInput } from "./order.schema"
+import { PaginationOptions } from "../../interfaces/paginate.type";
 
-export const findAll = () => {
-    return prisma.order.findMany({
-        include: { orderProductMap: true }
-    })
+export const findAll = async <T>(options: {
+    pagination: PaginationOptions<T>;
+    filters: Partial<T>;
+}) => {
+    const { page, limit, sortBy, sortOrder } = options.pagination;
+    const skip = (page - 1) * limit;
+    const where = options.filters;
+    const orderBy = sortBy ? { [sortBy]: sortOrder } : undefined;
+
+    const [data, total] = await Promise.all([
+        prisma.order.findMany({ skip, take: limit, where, orderBy, include: { orderProductMap: true } }),
+        prisma.order.count({ where }),
+    ]);
+
+    return {
+        data,
+        meta: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        },
+    };
 }
 
 export const findById = (id: number, prismaIntance: PrismaClient | Prisma.TransactionClient = prisma) => {

@@ -1,10 +1,21 @@
+import { Prisma } from '@prisma/client';
+
 import { Request, Response } from 'express';
+
+import { parseQueryParams } from '../../utils/paginate-helpers';
 
 import * as orderService from './order.service';
 
 export const getAllOrders = async (req: Request, res: Response): Promise<void> => {
-    const orders = await orderService.doGetAllOrders();
-    res.status(200).json({ success: true, data: orders })
+
+    const allowedFilters: (keyof Prisma.OrderWhereInput)[] = ['orderDescription', 'id'];
+
+    const { filters, pagination } = parseQueryParams<Prisma.OrderWhereInput>(
+      req.query, allowedFilters, 'Order'
+    );
+
+    const orders = await orderService.doGetAllOrders({filters, pagination});
+    res.status(200).json({ success: true, ...orders })
 }
 
 export const getOrder = async (req: Request, res: Response) => {

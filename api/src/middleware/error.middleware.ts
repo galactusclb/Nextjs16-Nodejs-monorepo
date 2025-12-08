@@ -44,6 +44,16 @@ export function errorHandler(
         });
     }
 
+    if (err instanceof Error) {
+        statusCode = 400;
+        message = err.message;
+
+        return res.status(statusCode).json({
+            success: false,
+            error: message,
+        });
+    }
+
     return res.status(statusCode).json({
         success: false,
         error: message,

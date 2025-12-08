@@ -1,11 +1,15 @@
 import { Order } from "@prisma/client";
 
+import { PaginationOptions } from "../../interfaces/paginate.type";
 import { NotFoundError } from "../../utils/errors/http-error";
 
 import * as repo from "./order.repository";
 import { CreateOrderInput, UpdateOrderInput } from "./order.schema";
 
-export const doGetAllOrders = () => repo.findAll();
+export const doGetAllOrders = async <T>({ pagination, filters }: {
+  pagination: PaginationOptions<T>;
+  filters: Partial<T>;
+}) => await repo.findAll({ pagination, filters });
 
 export const doGetOrderById = async (id: Order['id']) => {
     const order = await repo.findById(id);

@@ -1,8 +1,8 @@
-import { fetchOrders } from "../service/order.service";
 import { TableMetaData } from "@/lib/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnFiltersState, PaginationState } from "@tanstack/react-table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { fetchOrders } from "../service/order.service";
 import { useOrderQueryParams } from "./useOrderQueryParams";
 
 export type UseOrdersDetailsParams = {};
