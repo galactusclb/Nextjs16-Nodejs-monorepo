@@ -13,7 +13,7 @@ import { Trash2 } from "lucide-react";
 import { useDeleteOrder } from "../hooks/useDeleteOrder";
 import { Order } from "../schemas";
 
-function DropdownItemDeleteOrderDialog({ item }: { item: Order }) {
+function DropdownItemDeleteOrderDialogPanel({ item }: { item: Order }) {
 
 	const { isOpen, toggleOpen, confirmDeleteOrder } = useDeleteOrder({
 		item,
@@ -59,4 +59,4 @@ function DropdownItemDeleteOrderDialog({ item }: { item: Order }) {
 	);
 }
 
-export { DropdownItemDeleteOrderDialog };
+export { DropdownItemDeleteOrderDialogPanel };

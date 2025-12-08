@@ -11,7 +11,7 @@ This is a monorepo containing:
 
 ## Live Application
 
-The live application is available at:
+The live application is available at a own Azure VM through Github action: 
 
 - **Web Application**: https://cs.cleaoo.com
 - **API Server**: https://api.cs.cleaoo.com
@@ -130,6 +130,28 @@ check-ministry-orderapp/
 └── docker-compose.yml           # Docker Compose configuration
 ```
 
+
+
+## Assumptions & Tradeoffs
+
+### Database Transactions
+- **Assumption**: All order operations (create, update, delete) use database transactions to ensure data consistency and prevent partial updates.
+- **Benefit**: Guarantees ACID compliance and data integrity across related records.
+
+### Hard Delete Implementation
+- **Tradeoff**: Currently using hard delete for order operations instead of soft delete (status-based hiding).
+- **Future Consideration**: In production, soft delete is recommended for audit trails, compliance, and data recovery. Orders should ideally change status (e.g., cancelled, archived) rather than being permanently removed.
+
+### Deployment Strategy
+- **Tradeoff**: Chose to deploy on a personal VM with custom domain instead of serverless platforms (Vercel, Netlify) or managed hosting.
+- **Rationale**: The application includes a persistent PostgreSQL database and requires continuous uptime, making managed hosting less cost-effective. Hosting on a personal VM with custom domain allows full control over infrastructure, subdomains, and SSL certificates.
+- **Architecture**: Services are deployed via Docker Compose and exposed through Nginx reverse proxy on subdomains:
+  - **Web Frontend**: https://cs.cleaoo.com (Next.js application)
+  - **API Server**: https://api.cleaoo.com (Express.js backend)
+- **Benefits**: Full control over deployment, custom domain ownership, ability to scale horizontally, and direct access to database and server logs.
+
+
+
 ## Database
 
 ### PostgreSQL Details
@@ -146,6 +168,25 @@ Migrations are automatically applied when the services start. To manually manage
 # Inside the api container
 npx prisma migrate dev --name <migration-name>
 ```
+
+## Production Deployment
+
+### Prerequisites for Production
+
+Before running the production Docker Compose setup, create the required Docker network:
+
+```bash
+# Create the Docker network for production
+docker network create cleaoo-net
+```
+
+Then run the production services:
+
+```bash
+docker compose -f docker-compose.prod.yml up --build
+```
+
+This will use the `cleaoo-net` network defined in the production configuration.
 
 ## Docker Commands
 
@@ -214,6 +255,7 @@ API endpoints are available in the `api/API.postman_collection.json` file for Po
 - Prisma ORM
 - PostgreSQL
 - TypeScript
+- Zod Runtime Validator
 - Jest (Testing)
 
 ### Frontend
@@ -222,20 +264,9 @@ API endpoints are available in the `api/API.postman_collection.json` file for Po
 - TypeScript
 - TailwindCSS
 - React Query
+- Zod Runtime Validator
 - React Hook Form
 
 ### Infrastructure
 - Docker
 - Docker Compose
-
-## Assumptions & Tradeoffs
-
-### Database Transactions
-- **Assumption**: All order operations (create, update, delete) use database transactions to ensure data consistency and prevent partial updates.
-- **Benefit**: Guarantees ACID compliance and data integrity across related records.
-
-### Hard Delete Implementation
-- **Tradeoff**: Currently using hard delete for order operations instead of soft delete (status-based hiding).
-- **Future Consideration**: In production, soft delete is recommended for audit trails, compliance, and data recovery. Orders should ideally change status (e.g., cancelled, archived) rather than being permanently removed.
-
-#

@@ -19,14 +19,14 @@ jobs:
           username: ${{ vars.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build and push Web image
+      - name: Build and push API image
         run: |
             docker build -f ./api/Dockerfile.prod -t ${{ vars.DOCKER_HUB_USERNAME }}/check-ministry-api:latest ./api
             docker push ${{ vars.DOCKER_HUB_USERNAME }}/check-ministry-api:latest
 
-      - name: Build and push API image
+      - name: Build and push Web image
         run: |
-            docker build -f ./web/Dockerfile.dev -t ${{ vars.DOCKER_HUB_USERNAME }}/check-ministry-web:latest ./web
+            docker build -f ./web/Dockerfile.prod -t ${{ vars.DOCKER_HUB_USERNAME }}/check-ministry-web:latest ./web
             docker push ${{ vars.DOCKER_HUB_USERNAME }}/check-ministry-web:latest
 
   deploy:
