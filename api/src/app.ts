@@ -14,7 +14,7 @@ const app = express();
 const apiRouter = express.Router();
 
 const allowedOrigins = [
-  'http://localhost:9002',
+  'http://localhost:3000',
   'https://api.cleaoo.com',
   'https://cs.cleaoo.com',
   'https://cs-dev.cleaoo.com',

@@ -4,26 +4,19 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copy all files
 COPY . .
 
-# Install dependencies
 RUN pnpm install 
 RUN npx prisma generate
 
-# Build the project
 RUN pnpm run build
 
-# Expose application port
 ENV NODE_ENV=production
 
 EXPOSE 4000
 
-# Make entrypoint script executable
 RUN chmod +x ./entrypoint.sh
 
-# Use entrypoint to run migrations, seed, then start app
 ENTRYPOINT ["./entrypoint.sh"]
 
-# Start the server (default command)
 CMD ["pnpm", "start"]
