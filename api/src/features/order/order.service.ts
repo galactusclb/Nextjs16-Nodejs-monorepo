@@ -22,15 +22,14 @@ export const doCreateOrder = async (input: CreateOrderInput) => {
 }
 
 export const doUpdateOrder = async (id: Order['id'], input: UpdateOrderInput) => {
-
     const order = await repo.findById(id);
-
+    
     if (!order) {
         throw new NotFoundError('Order not found');
     }
-
+    
     if (input.orderDescription) {
-        await repo.updateOrder(id, { orderDescription: order.orderDescription });
+        await repo.updateOrder(id, { orderDescription: input.orderDescription });
     }
 
     return await repo.findById(id);

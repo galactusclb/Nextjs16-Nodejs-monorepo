@@ -10,54 +10,28 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from '@/components/ui/textarea';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useCreateOrder } from '../hooks/useCreateOrder';
+import { FormProvider } from 'react-hook-form';
 import { useFetchProducts } from '../hooks/useFetchProducts';
-import { orderMutateSchema, type OrderMutateFormData } from '../schemas';
+import { useOrderForm } from '../hooks/useOrderForm';
 
-export default function OrderMutateForm() {
-    const router = useRouter();
-    const pathname = usePathname();
+interface OrderMutateFormProps {
+    orderId?: number;
+}
 
-    const { data: products = [], isLoading: loadingProducts, error: productsError } = useFetchProducts();
-    const { createOrder, loading } = useCreateOrder({
-        onSuccess: () => goBack(),
-    });
+export default function OrderMutateForm({ orderId }: OrderMutateFormProps) {
+    const { 
+        form, 
+        handleSubmit, 
+        control, 
+        isEditing,
+        loading,
+        onSubmit,
+        onInvalidSubmit,
+        goBack,
+    } = useOrderForm({ orderId });
 
-    const form = useForm<OrderMutateFormData>({
-        resolver: zodResolver(orderMutateSchema),
-        defaultValues: {
-            orderDescription: "",
-            productIds: [],
-        }
-    })
-
-    const { handleSubmit, formState: { errors }, control } = form
-
-    const onSubmit = async (data: OrderMutateFormData) => {
-        await createOrder(data);
-    }
-
-    const onInvalidSubmit = (errors: any) => {
-        console.log('Form validation errors:', errors);
-    }
-
-    const goBack = () => {
-        const basePath = pathname.substring(0, pathname.lastIndexOf('/'));
-        router.push(basePath);
-    };
-
-
-    if (loadingProducts) {
-        return <div className="px-6 pb-4">Loading products...</div>
-    }
-
-    if (productsError) {
-        return <div className="px-6 pb-4">Error loading products. Please refresh the page.</div>
-    }
+    const { data: products = [] } = useFetchProducts();
 
     return (
         <div className="px-6 pb-4">
@@ -76,7 +50,9 @@ export default function OrderMutateForm() {
                 <FormProvider {...form}>
                     <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="space-y-6">
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold">Create New Order</h2>
+                            <h2 className="text-lg font-semibold">
+                                {isEditing ? 'Edit Order' : 'Create New Order'}
+                            </h2>
 
                             <FormField
                                 control={control}
@@ -150,7 +126,7 @@ export default function OrderMutateForm() {
                                 size={"lg"}
                             >
                                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Create Order
+                                {isEditing ? 'Update Order' : 'Create Order'}
                             </Button>
                         </div>
                     </form>

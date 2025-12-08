@@ -64,6 +64,27 @@ export const createOrderAction = async (data: OrderMutateFormData): Promise<{
     }
 };
 
+export const updateOrderAction = async (orderId: number, data: OrderMutateFormData): Promise<{
+    success: boolean;
+    data?: Order;
+    error?: string;
+}> => {
+    try {
+        console.log('updating data', data)
+        const response = await apiClient.put(`/orders/${orderId}`, data);
+        return {
+            success: true,
+            data: response.data,
+        };
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Failed to update order. Please try again.';
+        return {
+            success: false,
+            error: errorMessage,
+        };
+    }
+};
+
 export const deleteOrder = async (orderId: number): Promise<void> => {
     await apiClient.delete(`/orders/${orderId}`);
 };
