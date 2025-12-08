@@ -29,7 +29,7 @@ export function useMutateOrder(options?: UseMutateOrderOptions) {
             const message = isUpdate ? 'Order updated successfully!' : 'Order created successfully!';
             toast.success(message);
             
-            queryClient.invalidateQueries({ queryKey: ['orders'] });
+            queryClient.invalidateQueries({ queryKey: ["/orders"] });
             
             options?.onSuccess?.();
         },

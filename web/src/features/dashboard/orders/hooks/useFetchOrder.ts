@@ -6,7 +6,7 @@ import { fetchOrderById } from '../service/order.service';
 
 export function useFetchOrder(orderId?: number) {
     return useQuery({
-        queryKey: ['orders', orderId],
+        queryKey: ["/orders", orderId],
         queryFn: async () => {
             if (!orderId) return null;
             const response = await fetchOrderById(orderId);
