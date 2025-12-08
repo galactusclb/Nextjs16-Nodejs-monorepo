@@ -234,7 +234,7 @@ docker compose build --no-cache api
 
 ## API Documentation
 
-API endpoints are available in the `api/API.postman_collection.json` file for Postman testing.
+The following endpoints are available for the Check Ministry Order App API:
 
 ### Main Endpoints
 
@@ -264,7 +264,6 @@ API endpoints are available in the `api/API.postman_collection.json` file for Po
 - TypeScript
 - TailwindCSS
 - React Query
-- Zod Runtime Validator
 - React Hook Form
 
 ### Infrastructure
