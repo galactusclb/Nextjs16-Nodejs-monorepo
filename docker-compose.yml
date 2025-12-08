@@ -22,8 +22,6 @@ services:
     container_name: api
     ports:
       - "4000:4000"
-    env_file:
-      - ./api/.env
     environment:
       NODE_ENV: development
       DATABASE_URL: postgres://postgres:postgres@db:5432/test-db
@@ -43,8 +41,6 @@ services:
     container_name: web
     ports:
       - "3000:3000"
-    env_file:
-      - ./web/.env
     environment:
       NEXT_PUBLIC_API_BASE_URL: http://localhost:4000/api
     volumes:
