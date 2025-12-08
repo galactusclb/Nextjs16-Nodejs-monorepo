@@ -3,7 +3,7 @@ import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { PageSize } from "@/lib/types";
 import { useOrdersDetails } from "../hooks/useOrdersDetails";
 import { orderTableColumns } from "./orderTableColumns";
-import { DropdownItemDeleteOrderDialog } from "./dropdownItemDeleteOrderDialog";
+import { DropdownItemDeleteOrderDialog } from "./DropdownItemDeleteOrderDialog";
 import { DropdownItemEditOrder } from "./DropdownItemEditOrder";
 
 function OrderTable() {

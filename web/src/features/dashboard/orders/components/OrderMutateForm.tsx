@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     FormControl,
     FormField,
@@ -14,16 +13,17 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { FormProvider } from 'react-hook-form';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useOrderForm } from '../hooks/useOrderForm';
+import { ProductListItem } from './ProductListItem';
 
 interface OrderMutateFormProps {
     orderId?: number;
 }
 
 export default function OrderMutateForm({ orderId }: OrderMutateFormProps) {
-    const { 
-        form, 
-        handleSubmit, 
-        control, 
+    const {
+        form,
+        handleSubmit,
+        control,
         isEditing,
         loading,
         onSubmit,
@@ -84,24 +84,17 @@ export default function OrderMutateForm({ orderId }: OrderMutateFormProps) {
                                                     <p className="text-sm text-muted-foreground">No products available</p>
                                                 ) : (
                                                     products.map((product) => (
-                                                        <div key={product.id} className="flex items-center space-x-2">
-                                                            <Checkbox
-                                                                id={`product-${product.id}`}
-                                                                checked={field.value.includes(product.id)}
-                                                                onCheckedChange={(checked) => {
-                                                                    const newValues = checked
-                                                                        ? [...field.value, product.id]
-                                                                        : field.value.filter(id => id !== product.id);
-                                                                    field.onChange(newValues);
-                                                                }}
-                                                            />
-                                                            <label
-                                                                htmlFor={`product-${product.id}`}
-                                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                                                            >
-                                                                {product.productName}
-                                                            </label>
-                                                        </div>
+                                                        <ProductListItem
+                                                            key={product.id}
+                                                            item={product}
+                                                            isChecked={field.value.includes(product.id)}
+                                                            onCheckedChange={(checked) => {
+                                                                const newValues = checked
+                                                                    ? [...field.value, product.id]
+                                                                    : field.value.filter(id => id !== product.id);
+                                                                field.onChange(newValues);
+                                                            }}
+                                                        />
                                                     ))
                                                 )}
                                             </div>

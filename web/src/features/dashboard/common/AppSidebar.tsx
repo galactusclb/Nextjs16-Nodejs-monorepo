@@ -16,6 +16,7 @@ import {
     PanelLeftClose
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navItems = [
     {
@@ -26,6 +27,8 @@ const navItems = [
 ];
 
 function AppSidebar() {
+    const pathname = usePathname();
+
     const { toggleSidebar, state } = useSidebar();
     const isCollapsed = state === "collapsed";
 
@@ -63,12 +66,15 @@ function AppSidebar() {
                 <SidebarMenu>
                     {navItems
                         .map((item) => {
+                            const isActive = pathname.startsWith(item.href);
+
                             return (
                                 <SidebarMenuItem key={item.href}>
                                     <Link href={item.href} passHref>
                                         <SidebarMenuButton
                                             tooltip={item.label}
-                                            className="cursor-pointer font-sans"
+                                            className={`cursor-pointer font-sans`}
+                                            isActive={isActive}
                                         >
                                             <item.icon className="h-5 w-5" />
                                             <span className="truncate">{item.label}</span>
