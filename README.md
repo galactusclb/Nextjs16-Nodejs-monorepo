@@ -199,10 +199,6 @@ API endpoints are available in the `api/API.postman_collection.json` file for Po
 
 - **Products**
   - `GET /api/products` - List all products
-  - `POST /api/products` - Create a new product
-  - `GET /api/products/:id` - Get product details
-  - `PUT /api/products/:id` - Update a product
-  - `DELETE /api/products/:id` - Delete a product
 
 ## Technologies Used
 
@@ -224,5 +220,15 @@ API endpoints are available in the `api/API.postman_collection.json` file for Po
 ### Infrastructure
 - Docker
 - Docker Compose
+
+## Assumptions & Tradeoffs
+
+### Database Transactions
+- **Assumption**: All order operations (create, update, delete) use database transactions to ensure data consistency and prevent partial updates.
+- **Benefit**: Guarantees ACID compliance and data integrity across related records.
+
+### Hard Delete Implementation
+- **Tradeoff**: Currently using hard delete for order operations instead of soft delete (status-based hiding).
+- **Future Consideration**: In production, soft delete is recommended for audit trails, compliance, and data recovery. Orders should ideally change status (e.g., cancelled, archived) rather than being permanently removed.
 
 #
