@@ -13,8 +13,8 @@ This is a monorepo containing:
 
 The live application is available at a own Azure VM through Github action: 
 
-- **Web Application**: https://cs.cleaoo.com
-- **API Server**: https://api.cs.cleaoo.com
+- **Web Application**: https://dmh.cleaoo.com
+- **API Server**: https://api.dmh.cleaoo.com
 
 ## Prerequisites
 
@@ -146,8 +146,8 @@ check-ministry-orderapp/
 - **Tradeoff**: Chose to deploy on a personal VM with custom domain instead of serverless platforms (Vercel, Netlify) or managed hosting.
 - **Rationale**: The application includes a persistent PostgreSQL database and requires continuous uptime, making managed hosting less cost-effective. Hosting on a personal VM with custom domain allows full control over infrastructure, subdomains, and SSL certificates.
 - **Architecture**: Services are deployed via Docker Compose and exposed through Nginx reverse proxy on subdomains:
-  - **Web Frontend**: https://cs.cleaoo.com (Next.js application)
-  - **API Server**: https://api.cleaoo.com (Express.js backend)
+  - **Web Frontend**: https://dmh.cleaoo.com (Next.js application)
+  - **API Server**: https://api.dmh.cleaoo.com (Express.js backend)
 - **Benefits**: Full control over deployment, custom domain ownership, ability to scale horizontally, and direct access to database and server logs.
 
 
