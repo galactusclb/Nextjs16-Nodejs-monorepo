@@ -13,7 +13,14 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "lib": ["es2017", "dom"],
-
+    "baseUrl": "src",
+    "paths": {
+      "@/utils/*": ["utils/*"],
+      "@/features/*": ["features/*"],
+      "@/middleware/*": ["middleware/*"],
+      "@/schemas/*": ["schemas/*"],
+      "@/lib/*": ["lib/*"],
+    },
     "isolatedModules" : true
   },
   "include": ["src"],

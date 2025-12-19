@@ -1,8 +1,10 @@
+import { intFromAny, trimmedString } from "@/lib/zod/extras";
+
 import z from "zod";
 
 export const orderBaseSchema = z.object({
-    orderDescription: z.string().min(1).max(100),
-    productIds: z.array(z.number())
+    orderDescription: trimmedString.min(1).max(100),
+    productIds: z.array(intFromAny)
 });
 
 export const createOrderSchema = {
@@ -13,14 +15,14 @@ export const createOrderSchema = {
 
 export const updateOrderSchema = {
     params: z.object({
-        id: z.coerce.number().int().positive(),
+        id: intFromAny.positive(),
     }),
     body: orderBaseSchema.partial(),
 }
 
 export const getOrderByIdSchema = {
   params: z.object({
-    id: z.coerce.number().int().positive(),
+    id: intFromAny.positive(),
   }),
 };
 

@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client"
-import prisma from "../../utils/prisma"
+import prisma from "@/lib/prisma/prisma"
 import { CreateOrderInput, UpdateOrderInput } from "./order.schema"
 import { PaginationOptions } from "../../interfaces/paginate.type";
 

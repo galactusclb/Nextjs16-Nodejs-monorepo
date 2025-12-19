@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 
 import { parseQueryParams } from '../../utils/paginate-helpers';
 
+import { CreateOrderInput } from './order.schema';
 import * as orderService from './order.service';
 
 export const getAllOrders = async (req: Request, res: Response): Promise<void> => {
@@ -30,7 +31,7 @@ export const getOrder = async (req: Request, res: Response) => {
 }
 
 export const createOrder = async (req: Request, res: Response) => {
-    const order = await orderService.doCreateOrder(req.body);
+    const order = await orderService.doCreateOrder(req.body as CreateOrderInput);
 
     res.status(201).json({ success: true, data: order });
 }
