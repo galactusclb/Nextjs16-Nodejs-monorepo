@@ -44,13 +44,15 @@ export const fetchOrders = ({ pageIndex, pageSize, filters }: TableMetaData): Pr
     return apiClient.get(`/orders?${params.toString()}`).then(res => res.data);
 };
 
-export const createOrderAction = async (data: OrderMutateFormData): Promise<{
+export const createOrderAction = async (data: OrderMutateFormData, idempotencyKey?: string): Promise<{
     success: boolean;
-    data?: any;
+    data?: Order;
     error?: string;
 }> => {
     try {
-        const response = await apiClient.post('/orders', data);
+        const response = await apiClient.post('/orders', data, {
+            headers: idempotencyKey ? { 'idempotency-Key': idempotencyKey } : {},
+        });
         return {
             success: true,
             data: response.data,

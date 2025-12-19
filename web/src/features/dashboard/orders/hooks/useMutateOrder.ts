@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { toast } from 'sonner';
 
+import { useRef } from 'react';
+
 import { OrderMutateFormData } from '../schemas';
 import { createOrderAction, updateOrderAction } from '../service/order.service';
 
@@ -14,11 +16,13 @@ export function useMutateOrder(options?: UseMutateOrderOptions) {
     const queryClient = useQueryClient();
     const isUpdate = !!options?.orderId;
 
+    const idempotencyKeyRef = useRef<string>(crypto.randomUUID());
+
     const {mutate, isPending, isError, error} = useMutation({
         mutationFn: async (data: OrderMutateFormData) => {
             const result = isUpdate
                 ? await updateOrderAction(options!.orderId!, data)
-                : await createOrderAction(data);
+                : await createOrderAction(data, idempotencyKeyRef.current);
 
             if (!result.success) {
                 throw new Error(result.error || (isUpdate ? 'Failed to update order' : 'Failed to create order'));
@@ -30,6 +34,10 @@ export function useMutateOrder(options?: UseMutateOrderOptions) {
             toast.success(message);
             
             queryClient.invalidateQueries({ queryKey: ["/orders"] });
+            
+            if (!isUpdate) {
+                idempotencyKeyRef.current = crypto.randomUUID();
+            }
             
             options?.onSuccess?.();
         },
