@@ -5,9 +5,7 @@ import { useCallback, useEffect } from "react";
 import { fetchOrders } from "../service/order.service";
 import { useOrderQueryParams } from "./useOrderQueryParams";
 
-export type UseOrdersDetailsParams = {};
-
-function useOrdersDetails({}: UseOrdersDetailsParams) {
+function useOrdersDetails() {
 	// const { toast } = useToast();
 
 	// const [pageMetaData, setPageMetaData] = useState<TableMetaData>({
@@ -32,7 +30,7 @@ function useOrdersDetails({}: UseOrdersDetailsParams) {
 
 	const handleFilterSubmit = useCallback(
 		(columnFilters: ColumnFiltersState) => {
-			const newFilters: Record<string, any> = {};
+			const newFilters: Record<string, unknown> = {};
 			columnFilters.forEach(({ id, value }) => {
 				newFilters[id] = value;
 			});

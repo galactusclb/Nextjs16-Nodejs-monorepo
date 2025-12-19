@@ -1,10 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { SubmitErrorHandler } from 'react-hook-form';
+
 import { useEffect } from 'react';
 
-import { useForm } from 'react-hook-form';
-
 import { usePathname, useRouter } from 'next/navigation';
+
+import { useForm } from 'react-hook-form';
 
 import { toast } from 'sonner';
 
@@ -42,7 +44,7 @@ export function useOrderForm({ orderId }: UseOrderFormOptions = {}) {
         await mutateOrder(data);
     };
 
-    const onInvalidSubmit = (errors: any) => {
+    const onInvalidSubmit: SubmitErrorHandler<OrderMutateFormData> = (errors) => {
         console.error('Form validation errors:', errors);
         toast.error('Form validation errors');
     };

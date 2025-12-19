@@ -13,7 +13,7 @@ function OrderTable() {
 		handleFilterSubmit,
 		handlePaginationChange,
 		totalPage,
-	} = useOrdersDetails({});
+	} = useOrdersDetails();
 
 	const columns = orderTableColumns({
 		dropdownItems: [
