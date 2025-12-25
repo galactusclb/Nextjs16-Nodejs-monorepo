@@ -51,7 +51,7 @@ export const createOrderAction = async (data: OrderMutateFormData, idempotencyKe
 }> => {
     try {
         const response = await apiClient.post('/orders', data, {
-            headers: idempotencyKey ? { 'idempotency-Key': idempotencyKey } : {},
+            headers: idempotencyKey ? { 'idempotency-key': idempotencyKey } : {},
         });
         return {
             success: true,

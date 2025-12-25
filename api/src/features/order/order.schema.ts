@@ -9,7 +9,7 @@ export const orderBaseSchema = z.object({
 
 export const createOrderSchema = {
     headers: z.object({
-        'idempotency-key': z.string().uuid('Invalid idempotency key format')
+        'idempotency-key': z.string({ required_error: 'Idempotency key is required' }).uuid('Invalid idempotency key format')
     }).passthrough(),
     body: orderBaseSchema.extend({
         productIds: orderBaseSchema.shape.productIds.min(1),

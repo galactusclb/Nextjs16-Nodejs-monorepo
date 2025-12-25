@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 import { OrderTable } from "../components/orderTable";
 
@@ -17,7 +16,6 @@ function OrdersContainer() {
     
 
     const handleAddOrder = () => {
-     
         router.push(`${pathName}/new`);
     };
 

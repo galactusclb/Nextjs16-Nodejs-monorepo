@@ -24,14 +24,10 @@ export const doGetOrderById = async (id: Order['id']) => {
 }
 
 export const doCreateOrder = async (input: CreateOrderInput, idempotencyKey: CreateOrderHeader['idempotency-key']) => {
-    if (!idempotencyKey) {
-        throw new BadRequestError('Missing idempotency key');    
-    }
-
     return prisma.$transaction(async (tx)=>{
         const existingOrder = await repo.findOrderByIdempotencyKey(idempotencyKey, tx);
 
-        if(!existingOrder) return existingOrder;
+        if(existingOrder) return existingOrder;
 
         return await repo.createOrder(input, idempotencyKey ,tx); 
     });
