@@ -1,5 +1,7 @@
-# Stage 1: Install dependencies and build the app
 FROM node:24-slim AS builder
+
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 
 WORKDIR /app
 

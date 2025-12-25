@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client"
-import prisma from "../../utils/prisma"
-import { CreateOrderInput, UpdateOrderInput } from "./order.schema"
-import { PaginationOptions } from "../../interfaces/paginate.type";
+import prisma from "@/lib/prisma/prisma.ts"
+import { CreateOrderHeader, CreateOrderInput, UpdateOrderInput } from "./order.schema.ts"
+import { PaginationOptions } from "../../interfaces/paginate.type.ts";
 
 export const findAll = async <T>(options: {
     pagination: PaginationOptions<T>;
@@ -37,26 +37,30 @@ export const findById = (id: number, prismaIntance: PrismaClient | Prisma.Transa
     })
 }
 
-export const createOrder = async (input: CreateOrderInput) => {
+export const findOrderByIdempotencyKey = (idempotencyKey: CreateOrderHeader['idempotency-key'], prismaIntance: PrismaClient | Prisma.TransactionClient = prisma) => {
+    return prismaIntance.order.findUnique({
+        where: {
+            idempotencyKey
+        },
+        include: { orderProductMap: { include: { product: true } } }
+    })
+}
+
+export const createOrder = async (input: CreateOrderInput, idempotencyKey: CreateOrderHeader['idempotency-key'], tx: Prisma.TransactionClient) => {
     const { orderDescription, productIds } = input;
 
-    const result = await prisma.$transaction(async (tx) => {
-
-        const order = await tx.order.create({
-            data: { orderDescription }
-        });
-
-        await tx.orderProductMap.createMany({
-            data: productIds?.map((productId) => ({
-                orderId: order.id,
-                productId
-            }))
-        });
-
-        return await findById(order.id, tx);
+    const order = await tx.order.create({
+        data: { orderDescription, idempotencyKey }
     });
 
-    return result;
+    await tx.orderProductMap.createMany({
+        data: productIds?.map((productId) => ({
+            orderId: order.id,
+            productId
+        }))
+    });
+
+    return await findById(order.id, tx);
 }
 
 export const appendProductsOrder = (orderId: number, productIds: CreateOrderInput["productIds"]) => {

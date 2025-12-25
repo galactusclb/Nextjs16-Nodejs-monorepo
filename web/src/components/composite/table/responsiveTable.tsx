@@ -25,13 +25,12 @@ import {
 } from "@/components/ui/table";
 import { PageSize } from "@/lib/types";
 import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar, Filters } from "./data-table-toolbar";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { Filters } from "./data-table-search-input";
 
 export type ColumnMeta = {
 	className?: string;
 };
-
-export const PAGE_SIZE_OPTIONS: PageSize[] = [10, 15, 20, 25, 30, 40, 50];
 
 export type ColumnDefExtend<TData, TValue = unknown> = TanstackColumnDef<
 	TData,
@@ -42,7 +41,7 @@ export type ColumnDefExtend<TData, TValue = unknown> = TanstackColumnDef<
 
 export type ResponsiveTableProps<TData> = {
 	data: TData[];
-	columns: ColumnDefExtend<TData, any>[];
+	columns: ColumnDefExtend<TData, unknown>[];
 	filters?: Filters<TData>[];
 	filterColumnKey?: string;
 	filterPlaceholder?: string;

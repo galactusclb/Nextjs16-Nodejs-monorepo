@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { validate } from '../../middleware/validate.middleware';
+import { validate } from '../../middleware/validate.middleware.ts';
 
-import { createOrder, deleteOrder, getAllOrders, getOrder, updateOrder } from './order.controller';
-import { createOrderSchema, deleteOrderSchema, getOrderByIdSchema, updateOrderSchema } from './order.schema';
+import { createOrder, deleteOrder, getAllOrders, getOrder, updateOrder } from './order.controller.ts';
+import { createOrderSchema, deleteOrderSchema, getOrderByIdSchema, updateOrderSchema } from './order.schema.ts';
 
 const router = Router();
 

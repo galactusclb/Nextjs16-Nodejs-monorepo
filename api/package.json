@@ -2,8 +2,9 @@
   "name": "cleansweep-backend",
   "version": "1.0.0",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "clean": "rm -rf dist",
     "dev-start": "nodemon --exac node --loader ts-node/esm src/server.ts",
     "build": "tsc",
@@ -13,7 +14,7 @@
     "jest:watch": "jest --watch",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "tsx prisma/seed.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -31,11 +32,12 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.30",
     "@types/qrcode": "^1.5.5",
+    "@types/sanitize-html": "^2.16.0",
     "jest": "^30.0.2",
     "jest-mock-extended": "^4.0.0",
     "prisma": "^6.8.2",
     "ts-jest": "^29.4.0",
-    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
@@ -50,6 +52,7 @@
     "mime-types": "^3.0.1",
     "multer": "^2.0.1",
     "qrcode": "^1.5.4",
+    "sanitize-html": "^2.17.0",
     "ts-node": "^10.9.2",
     "zod": "^3.24.4"
   }

@@ -14,7 +14,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { PAGE_SIZE_OPTIONS } from "./responsiveTable";
+import { PageSize } from "@/lib/types";
+
+export const PAGE_SIZE_OPTIONS: PageSize[] = [10, 15, 20, 25, 30, 40, 50];
 
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;

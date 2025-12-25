@@ -1,8 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { DMMF } from '@prisma/client/runtime/library';
+
 import { z } from "zod";
-import { PaginationOptions } from "../interfaces/paginate.type";
-import { BadRequestError } from "./errors/http-error";
+
+import { PaginationOptions } from "../interfaces/paginate.type.ts";
+
+import { BadRequestError } from "./errors/http-error.ts";
 
 type FieldType = 'string' | 'enum' | 'number' | 'date' | 'boolean' | 'relation';
 

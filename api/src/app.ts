@@ -1,3 +1,7 @@
+import orderRoutes from '@/features/order/index.ts';
+import productRoutes from '@/features/product/index.ts';
+import { errorHandler } from '@/middleware/error.middleware.ts';
+
 import cookieParser from 'cookie-parser';
 
 import cors from 'cors';
@@ -5,10 +9,6 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 
 import rateLimit from 'express-rate-limit';
-
-import orderRoutes from './features/order';
-import productRoutes from './features/product';
-import { errorHandler } from './middleware/error.middleware';
 
 const app = express();
 const apiRouter = express.Router();

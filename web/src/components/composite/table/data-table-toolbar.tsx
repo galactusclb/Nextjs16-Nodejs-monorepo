@@ -1,34 +1,14 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import { LucideProps, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { DataTableViewOptions } from "@/components/composite/table/data-table-view-options";
 
 import { Button } from "@/components/ui/button";
-import { Table as TableType } from "@tanstack/react-table";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { DataTableSearchInput } from "./data-table-search-input";
-
-export type filterOption = {
-	value: string;
-	label: string;
-	icon?: ForwardRefExoticComponent<
-		Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-	>;
-};
-
-export type Filters<TData> = {
-	type?: "input" | "select";
-	columnKey: string;
-	customFilterKey?: string;
-	placeholder?: string;
-	customFilterComponent?:
-		| React.ReactNode
-		| ((table: TableType<TData>) => React.ReactNode);
-	options?: filterOption[];
-};
+import { DataTableSearchInput, Filters } from "./data-table-search-input";
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;

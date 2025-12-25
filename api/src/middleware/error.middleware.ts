@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { AppError } from '../utils/errors/app-errors';
-import { HttpError } from '../utils/errors/http-error';
+import { AppError } from '../utils/errors/app-errors.ts';
+import { HttpError } from '../utils/errors/http-error.ts';
 
 export function errorHandler(
     err: unknown,

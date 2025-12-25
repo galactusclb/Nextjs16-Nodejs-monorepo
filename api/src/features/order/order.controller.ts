@@ -2,9 +2,10 @@ import { Prisma } from '@prisma/client';
 
 import { Request, Response } from 'express';
 
-import { parseQueryParams } from '../../utils/paginate-helpers';
+import { parseQueryParams } from '../../utils/paginate-helpers.ts';
 
-import * as orderService from './order.service';
+import { CreateOrderHeader, CreateOrderInput } from './order.schema.ts';
+import * as orderService from './order.service.ts';
 
 export const getAllOrders = async (req: Request, res: Response): Promise<void> => {
 
@@ -30,7 +31,9 @@ export const getOrder = async (req: Request, res: Response) => {
 }
 
 export const createOrder = async (req: Request, res: Response) => {
-    const order = await orderService.doCreateOrder(req.body);
+    const idempotencyKey = (req.headers as CreateOrderHeader)['idempotency-key'];
+
+    const order = await orderService.doCreateOrder(req.body as CreateOrderInput, idempotencyKey);
 
     res.status(201).json({ success: true, data: order });
 }
