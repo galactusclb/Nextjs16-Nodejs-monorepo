@@ -1,4 +1,4 @@
-import { trimmedString } from "@/lib/zod/extras";
+import { trimmedString } from "@/lib/zod/extras.ts";
 
 import z from "zod";
 

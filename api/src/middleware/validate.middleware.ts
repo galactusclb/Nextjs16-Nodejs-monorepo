@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 
 import { AnyZodObject, ZodError } from 'zod';
 
-import { BadRequestError } from '../utils/errors/http-error';
+import { BadRequestError } from '../utils/errors/http-error.ts';
 
 type Schemas = {
+  headers?: AnyZodObject,
   body?: AnyZodObject;
   params?: AnyZodObject;
   query?: AnyZodObject;
@@ -13,6 +14,12 @@ type Schemas = {
 export const validate = (schemas: Schemas) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
+
+      if (schemas.headers) {
+        const result = schemas.headers.parse(req.headers);
+        req.headers = result
+      }
+
       if (schemas.body) {
         const result = schemas.body.parse(req.body);
         req.body = result
