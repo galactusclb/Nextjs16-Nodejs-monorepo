@@ -1,4 +1,4 @@
-# Check Ministry Order App
+# 3 Tier Ordering App
 
 A full-stack order management application built with Node.js/Express backend and Next.js frontend, powered by PostgreSQL database.
 
@@ -43,7 +43,7 @@ npm --version
 
 ```bash
 git clone <repository-url>
-cd check-ministry-orderapp
+cd orderapp
 ```
 
 ### 2. Environment Setup
@@ -98,7 +98,7 @@ Once all services are running locally:
 ## Project Structure
 
 ```
-check-ministry-orderapp/
+orderapp/
 ├── api/                          # Backend (Express.js)
 │   ├── src/
 │   │   ├── features/
@@ -234,7 +234,7 @@ docker compose build --no-cache api
 
 ## API Documentation
 
-The following endpoints are available for the Check Ministry Order App API:
+The following endpoints are available for the Order App API:
 
 ### Main Endpoints
 
